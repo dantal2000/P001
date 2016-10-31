@@ -20,8 +20,8 @@ public class Controller {
 
     @FXML
     public void initialize() {
-        option.setCellValueFactory(new PropertyValueFactory<TableRow, String>("option"));
-        value.setCellValueFactory(new PropertyValueFactory<TableRow, String>("value"));
+        option.setCellValueFactory(new PropertyValueFactory<>("option"));
+        value.setCellValueFactory(new PropertyValueFactory<>("value"));
         table.setItems(data);
     }
 

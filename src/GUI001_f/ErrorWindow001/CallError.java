@@ -1,5 +1,6 @@
 package GUI001_f.ErrorWindow001;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,24 +12,26 @@ import java.io.IOException;
  */
 public class CallError {
     public static void Call(String message) {
-        try {
-            FXMLLoader loader = new FXMLLoader(CallError.class.getResource("View.fxml"));
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(CallError.class.getResource("View.fxml"));
 
-            Stage stage = new Stage();
-            Scene scene = new Scene(loader.load());
-            GUI001_f.ErrorWindow001.Controller controller = loader.getController();
+                Stage stage = new Stage();
+                Scene scene = new Scene(loader.load());
+                Controller controller = loader.getController();
 
-            String title = "Error";
-            stage.setTitle(title);
+                String title = "Error";
+                stage.setTitle(title);
 
-            controller.setText(message);
-            controller.setCurrentStage(stage);
+                controller.setText(message);
+                controller.setCurrentStage(stage);
 
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static void CallUrlException() {

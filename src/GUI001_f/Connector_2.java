@@ -26,26 +26,24 @@ class Connector_2 {
 
     }
 
-    String getResult() {
+    String getResult() throws IOException {
         String result = "";
-        try {
-            HttpResponse response = getResponse();
-            String charset = "UTF-8";
 
-            if (response.containsHeader("Content-Type")) {
-                String contentType = response.getFirstHeader("Content-Type").getValue();
-                Pattern pattern = Pattern.compile("charset=(\\S*);?");
-                java.util.regex.Matcher matcher = pattern.matcher(contentType);
-                while (matcher.find()) charset = matcher.group().replaceAll("charset=", "").replaceAll(";", "");
-            }
+        HttpResponse response = getResponse();
+        String charset = "UTF-8";
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), charset))) {
-                for (String line = reader.readLine(); line != null; line = reader.readLine())
-                    result += line + "\n";
-            }
-        } catch (IOException e) {
-            CallError.Call(e.getMessage());
+        if (response.containsHeader("Content-Type")) {
+            String contentType = response.getFirstHeader("Content-Type").getValue();
+            Pattern pattern = Pattern.compile("charset=(\\S*);?");
+            java.util.regex.Matcher matcher = pattern.matcher(contentType);
+            while (matcher.find()) charset = matcher.group().replaceAll("charset=", "").replaceAll(";", "");
         }
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), charset))) {
+            for (String line = reader.readLine(); line != null; line = reader.readLine())
+                result += line + "\n";
+        }
+
         return result;
     }
 

@@ -3,7 +3,7 @@ package GUI001_f.Result002_f;
 /**
  * Created by Даниил on 30.10.2016.
  */
-public class TableRow {
+class TableRow {
     private String option, value;
 
     public TableRow() {

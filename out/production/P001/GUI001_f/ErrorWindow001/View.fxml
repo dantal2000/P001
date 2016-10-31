@@ -4,11 +4,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="97.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/8"
+            prefHeight="97.0" xmlns="http://javafx.com/javafx/8"
             fx:controller="GUI001_f.ErrorWindow001.Controller">
     <children>
-        <Label fx:id="label" alignment="CENTER" layoutX="102.0" layoutY="14.0" text="Error" AnchorPane.leftAnchor="0.0"
-               AnchorPane.rightAnchor="0.0"/>
+        <HBox alignment="CENTER" layoutY="14.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+            <children>
+                <Label fx:id="label" alignment="CENTER" layoutX="102.0" layoutY="14.0" text="Error"
+                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+            </children>
+        </HBox>
         <Button fx:id="button" layoutX="99.0" layoutY="58.0" mnemonicParsing="false" text="OK"
                 AnchorPane.leftAnchor="98.0" AnchorPane.rightAnchor="98.0"/>
     </children>

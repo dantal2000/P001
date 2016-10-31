@@ -1,27 +1,39 @@
 package GUI001_f;
 
 import GUI001_f.ErrorWindow001.CallError;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 
 public class Controller {
     @FXML
-    public ChoiceBox<String> chooser;
+    private ChoiceBox<String> chooser;
     @FXML
     private TextArea urlArea, cookieArea;
     @FXML
     private Button clearUrlButton, clearCookieButton, doSome;
 
     private Model model;
+    private Object monitor = new Object();
 
     @FXML
     public void initialize() {
-        model = new Model();
+        model = new Model(this);
         clearUrlButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> urlArea.setText(""));
         clearCookieButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> cookieArea.setText(""));
 
@@ -43,24 +55,71 @@ public class Controller {
     }
 
     private void analyzeHandle(String handle) {
-        try {
-            switch (handle) {
-                case Data_Strings.a: {
-                    String cookies = model.receiveCookies(getURL(), getCookies());
-                    if (!cookies.equals("")) cookieArea.setText(cookies);
-                    break;
-                }
-                case Data_Strings.b: {
-                    model.handleOpenURL(getURL(), getCookies());
-                    break;
-                }
-                case Data_Strings.c: {
-                    model.handleShowHeaders(getURL(), getCookies());
-                    break;
-                }
+        Thread thread1 = new Thread(() -> {
+            try {
+                Image image = new Image(new FileInputStream(new File(getClass().getResource("img/1.gif").toURI())));
+                ImageView view = new ImageView(image);
+                final Stage[] waiting = new Stage[1];
+
+                Platform.runLater(() -> {
+                    waiting[0] = new Stage();
+                    AnchorPane root = new AnchorPane(view);
+                    Scene scene = new Scene(root);
+                    waiting[0].setScene(scene);
+                    waiting[0].show();
+                });
+                new Thread(() -> {
+                    try {
+                        synchronized (getMonitor()) {
+                            getMonitor().wait();
+                            Platform.runLater(waiting[0]::close);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            } catch (FileNotFoundException | URISyntaxException e) {
+                e.printStackTrace();
             }
-        } catch (URLError urlError) {
-            CallError.CallUrlException();
+        });
+        thread1.start();
+        try {
+            thread1.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        new Thread(() ->
+        {
+            try {
+                switch (handle) {
+                    case Data_Strings.a: {
+                        String cookies = model.receiveCookies(getURL(), getCookies());
+                        if (!cookies.equals("")) Platform.runLater(() -> cookieArea.setText(cookies));
+                        synchronized (getMonitor()) {
+                            getMonitor().notifyAll();
+                        }
+                        break;
+                    }
+                    case Data_Strings.b: {
+                        model.handleOpenURL(getURL(), getCookies());
+                        break;
+                    }
+                    case Data_Strings.c: {
+                        model.handleShowHeaders(getURL(), getCookies());
+                        break;
+                    }
+                }
+            } catch (URLError urlError) {
+                synchronized (getMonitor()) {
+                    getMonitor().notifyAll();
+                }
+                CallError.CallUrlException();
+            }
+        }).start();
+
+    }
+
+    Object getMonitor() {
+        return monitor;
     }
 }
