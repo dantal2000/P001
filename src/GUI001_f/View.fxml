@@ -26,7 +26,7 @@
         <Label layoutX="60.0" layoutY="233.0" text="Cookies"/>
         <!--<HBox alignment="CENTER" layoutX="243.0" layoutY="361.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <Button fx:id="recieveCookies" mnemonicParsing="false" text="Получить куки" />
+                <Button fx:id="receiveCookies" mnemonicParsing="false" text="Получить куки" />
                 <Button fx:id="openButton" layoutX="269.0" layoutY="361.0" mnemonicParsing="false" text="Открыть" />
                 <Button fx:id="showResponceHeaders" layoutX="339.0" layoutY="361.0" mnemonicParsing="false" text="Получить заголовки ответа сервера" />
             </children>

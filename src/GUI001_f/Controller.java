@@ -1,5 +1,6 @@
 package GUI001_f;
 
+import GUI001_f.ErrorWindow001.CallError;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,30 +9,19 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 
-import java.util.ResourceBundle;
-
 public class Controller {
     @FXML
     public ChoiceBox<String> chooser;
     @FXML
     private TextArea urlArea, cookieArea;
     @FXML
-    private Button openButton, clearUrlButton, clearCookieButton, showResponceHeaders, recieveCookies, doSome;
+    private Button clearUrlButton, clearCookieButton, doSome;
 
     private Model model;
-    private ResourceBundle bundle;
 
     @FXML
     public void initialize() {
-        model = new Model(this);
-        /*openButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> model.handleOpenURL());
-        clearUrlButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> urlArea.setText(""));
-        clearCookieButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> cookieArea.setText(""));
-        showResponceHeaders.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> model.handleShowHeaders());
-        recieveCookies.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            String cookies = model.recieveCookies();
-            if (!cookies.equals("")) cookieArea.setText(cookies);
-        });*/
+        model = new Model();
         clearUrlButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> urlArea.setText(""));
         clearCookieButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> cookieArea.setText(""));
 
@@ -42,29 +32,35 @@ public class Controller {
         chooser.setValue(Data_Strings.b);
     }
 
-    public String getURL() {
-        return urlArea.getText();
+    private String getURL() throws URLError {
+        String url = urlArea.getText();
+        if (url.equals("")) throw new URLError();
+        return url;
     }
 
-    public String getCookies() {
+    private String getCookies() {
         return cookieArea.getText();
     }
 
     private void analyzeHandle(String handle) {
-        switch (handle) {
-            case Data_Strings.a: {
-                String cookies = model.recieveCookies();
-                if (!cookies.equals("")) cookieArea.setText(cookies);
-                break;
+        try {
+            switch (handle) {
+                case Data_Strings.a: {
+                    String cookies = model.receiveCookies(getURL(), getCookies());
+                    if (!cookies.equals("")) cookieArea.setText(cookies);
+                    break;
+                }
+                case Data_Strings.b: {
+                    model.handleOpenURL(getURL(), getCookies());
+                    break;
+                }
+                case Data_Strings.c: {
+                    model.handleShowHeaders(getURL(), getCookies());
+                    break;
+                }
             }
-            case Data_Strings.b: {
-                model.handleOpenURL();
-                break;
-            }
-            case Data_Strings.c: {
-                model.handleShowHeaders();
-                break;
-            }
+        } catch (URLError urlError) {
+            CallError.CallUrlException();
         }
     }
 }

@@ -23,19 +23,13 @@ class Connector_2 {
     Connector_2(String url, String cookie) throws MalformedURLException {
         this.url = new URL(url);
         Cookie = cookie;
+
     }
 
     String getResult() {
         String result = "";
-
-        /*HttpClient client = HttpClientBuilder.create().build();
-        HttpGet getRequest = new HttpGet(String.valueOf(url));
-
-        getRequest.addHeader("Cookie", Cookie);*/
-
         try {
-            //HttpResponse response = client.execute(getRequest);
-            HttpResponse response = getResponce();
+            HttpResponse response = getResponse();
             String charset = "UTF-8";
 
             if (response.containsHeader("Content-Type")) {
@@ -44,31 +38,25 @@ class Connector_2 {
                 java.util.regex.Matcher matcher = pattern.matcher(contentType);
                 while (matcher.find()) charset = matcher.group().replaceAll("charset=", "").replaceAll(";", "");
             }
+
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), charset))) {
                 for (String line = reader.readLine(); line != null; line = reader.readLine())
                     result += line + "\n";
             }
         } catch (IOException e) {
-            //e.printStackTrace();
             CallError.Call(e.getMessage());
         }
         return result;
     }
 
-    Map<String, String> getResponseParams() {
+    Map<String, String> getResponseParams() throws IOException {
         Map<String, String> map = new HashMap<>();
-
-        try {
-            HttpResponse response = getResponce();
-            for (Header header : response.getAllHeaders()) map.put(header.getName(), header.getValue());
-        } catch (IOException e) {
-            CallError.Call(e.getMessage());
-        }
-
+        HttpResponse response = getResponse();
+        for (Header header : response.getAllHeaders()) map.put(header.getName(), header.getValue());
         return map;
     }
 
-    private HttpResponse getResponce() throws IOException {
+    private HttpResponse getResponse() throws IOException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet getRequest = new HttpGet(String.valueOf(url));
         getRequest.addHeader("Cookie", Cookie);
@@ -78,7 +66,7 @@ class Connector_2 {
     String recieveCookies() {
         String cookies = "";
         try {
-            HttpResponse response = getResponce();
+            HttpResponse response = getResponse();
             if (response.containsHeader("Set-Cookie"))
                 cookies = response.getFirstHeader("Set-Cookie").getValue();
         } catch (IOException e) {
