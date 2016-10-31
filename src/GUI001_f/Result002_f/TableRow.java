@@ -1,7 +1,5 @@
 package GUI001_f.Result002_f;
 
-import javafx.collections.ObservableArray;
-
 /**
  * Created by Даниил on 30.10.2016.
  */

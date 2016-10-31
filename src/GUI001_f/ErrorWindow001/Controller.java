@@ -10,11 +10,11 @@ import javafx.stage.Stage;
  * Created by Даниил on 30.10.2016.
  */
 public class Controller {
-    private Stage currentStage;
     @FXML
     Button button;
     @FXML
     Label label;
+    private Stage currentStage;
 
     @FXML
     public void initialize() {
