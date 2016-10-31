@@ -2,8 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="285.0"
-            prefWidth="213.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="285.0" prefWidth="213.0" xmlns="http://javafx.com/javafx/8"
             fx:controller="GUI001_f.Result002_f.Controller">
     <children>
         <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="143.0" layoutY="63.0" prefHeight="400.0"

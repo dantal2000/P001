@@ -2,8 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
             fx:controller="GUI001_f.Controller">
     <children>
 
@@ -24,16 +24,21 @@
         </SplitPane>
         <Label layoutX="70.0" layoutY="80.0" text="URL"/>
         <Label layoutX="60.0" layoutY="233.0" text="Cookies"/>
-        <HBox alignment="CENTER" layoutX="243.0" layoutY="361.0" spacing="20.0" AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0">
+        <!--<HBox alignment="CENTER" layoutX="243.0" layoutY="361.0" spacing="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
-                <Button mnemonicParsing="false" text="Получить куки" fx:id="recieveCookies"/>
-                <Button fx:id="openButton" layoutX="269.0" layoutY="361.0" mnemonicParsing="false" text="Открыть"/>
-                <Button fx:id="showResponceHeaders" layoutX="339.0" layoutY="361.0" mnemonicParsing="false"
-                        text="Получить заголовки ответа сервера"/>
+                <Button fx:id="recieveCookies" mnemonicParsing="false" text="Получить куки" />
+                <Button fx:id="openButton" layoutX="269.0" layoutY="361.0" mnemonicParsing="false" text="Открыть" />
+                <Button fx:id="showResponceHeaders" layoutX="339.0" layoutY="361.0" mnemonicParsing="false" text="Получить заголовки ответа сервера" />
             </children>
-        </HBox>
+        </HBox>-->
         <Button fx:id="clearUrlButton" layoutX="490.0" layoutY="76.0" mnemonicParsing="false" text="Очистить"/>
         <Button fx:id="clearCookieButton" layoutX="490.0" layoutY="229.0" mnemonicParsing="false" text="Очистить"/>
+        <HBox alignment="CENTER" layoutX="225.0" layoutY="330.0" spacing="20.0" AnchorPane.leftAnchor="0.0"
+              AnchorPane.rightAnchor="0.0">
+            <children>
+                <ChoiceBox fx:id="chooser" layoutX="225.0" layoutY="330.0"/>
+                <Button fx:id="doSome" layoutX="389.0" layoutY="330.0" mnemonicParsing="false" text="Сделать"/>
+            </children>
+        </HBox>
     </children>
 </AnchorPane>
