@@ -15,11 +15,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-
 public class Controller {
     @FXML
     private ChoiceBox<String> chooser;
@@ -56,31 +51,30 @@ public class Controller {
 
     private void analyzeHandle(String handle) {
         Thread thread1 = new Thread(() -> {
-            try {
-                Image image = new Image(new FileInputStream(new File(getClass().getResource("img/1.gif").toURI())));
-                ImageView view = new ImageView(image);
-                final Stage[] waiting = new Stage[1];
+            /*URL url = getClass().getResource("img/1.gif");
+            File a = new File(url.toURI());*/
+            Image image = new Image(getClass().getResourceAsStream("img/1.gif"));
 
-                Platform.runLater(() -> {
-                    waiting[0] = new Stage();
-                    AnchorPane root = new AnchorPane(view);
-                    Scene scene = new Scene(root);
-                    waiting[0].setScene(scene);
-                    waiting[0].show();
-                });
-                new Thread(() -> {
-                    try {
-                        synchronized (getMonitor()) {
-                            getMonitor().wait();
-                            Platform.runLater(waiting[0]::close);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+            ImageView view = new ImageView(image);
+            final Stage[] waiting = new Stage[1];
+
+            Platform.runLater(() -> {
+                waiting[0] = new Stage();
+                AnchorPane root = new AnchorPane(view);
+                Scene scene = new Scene(root);
+                waiting[0].setScene(scene);
+                waiting[0].show();
+            });
+            new Thread(() -> {
+                try {
+                    synchronized (getMonitor()) {
+                        getMonitor().wait();
+                        Platform.runLater(waiting[0]::close);
                     }
-                }).start();
-            } catch (FileNotFoundException | URISyntaxException e) {
-                e.printStackTrace();
-            }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         });
         thread1.start();
         try {
